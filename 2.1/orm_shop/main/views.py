@@ -1,13 +1,16 @@
 from django.http import Http404
 from django.shortcuts import render
 
-from main.models import Car
+from main.models import Car, Sale, Client
 
 
 def cars_list_view(request):
+    context = {
+       
+    }
     # получите список авто
     template_name = 'main/list.html'
-    return render(request, template_name, {})  # передайте необходимый контекст
+    return render(request, template_name, context)  # передайте необходимый контекст
 
 
 def car_details_view(request, car_id):
