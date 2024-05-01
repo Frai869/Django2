@@ -41,15 +41,15 @@ class Client(models.Model):
     phone_number = models.CharField(max_length=16)
 
     def __str__(self):
-        return f'{self.name} {self.middle_name} {self.last_name}'
+        return f'{self.last_name} {self.name} {self.middle_name} {self.phone_number}'
 
 
 class Car(models.Model):
     id = models.IntegerField(primary_key=True)
     model = models.CharField(max_length=128)
-    year = models.IntegerField(max_length=4)
+    year = models.IntegerField()
     color = models.CharField(max_length=32)
-    mileage = models.IntegerField(max_length=16)
+    mileage = models.IntegerField()
     volume = models.DecimalField(max_digits=2, decimal_places=1)
     body_type = models.CharField(choices=BODY_TYPE_CHOICES, max_length=32)
     drive_unit = models.CharField(choices=DRIVE_UNIT_CHOICES, max_length=32)
@@ -58,15 +58,17 @@ class Car(models.Model):
     price = models.DecimalField(max_digits=12, decimal_places=2)
     image = models.FileField(null=True, blank=True)
 
+    objects = models.Manager()
     def __str__(self):
-        return f'{self.model}'
+        return f'{self.model} {self.year} {self.color}'
 
 
 class Sale(models.Model):
     id = models.IntegerField(primary_key=True)
-    client = models.ForeignKey(Client, on_delete=models.CASCADE, related_name='sales')
+    client = models.ForeignKey(Client, null=True, blank=True, on_delete=models.CASCADE, related_name='sales')
     car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='sales')
     created_at = models.DateTimeField(auto_now_add=True)
 
+    objects = models.Manager()
     def __str__(self):
-        return f'{self.created_at} {self.car} {self.client}'
+        return f'{self.created_at}'
