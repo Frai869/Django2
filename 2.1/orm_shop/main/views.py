@@ -1,7 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render
 
-from main.models import Car, Sale, Client
+from .models import Car, Sale, Client
 
 
 def cars_list_view(request):
@@ -16,8 +16,9 @@ def cars_list_view(request):
 
 def car_details_view(request, car_id):
     try:
+        car = Car.objects.get(id=car_id)
         context = {
-            "car": Car.objects.get(id=car_id)
+            "car": car
         }
         # получите авто, если же его нет, выбросьте ошибку 404
         template_name = 'main/details.html'
@@ -28,10 +29,10 @@ def car_details_view(request, car_id):
 def sales_by_car(request, car_id):
     try:
         car = Car.objects.get(id=car_id)
-        # sale = Sale.objects.get(car=car)
+        sale = car.sales.all()
         context = {
             "car": car,
-            # 'sale': sale
+            "sales": sale
         }# получите авто и его продажи
         template_name = 'main/sales.html'
         return render(request, template_name, context)  # передайте необходимый контекст

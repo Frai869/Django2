@@ -40,6 +40,8 @@ class Client(models.Model):
     date_of_birth = models.DateField(blank=True)
     phone_number = models.CharField(max_length=16)
 
+    objects = models.Manager()
+
     def __str__(self):
         return f'{self.last_name} {self.name} {self.middle_name} {self.phone_number}'
 
@@ -65,8 +67,8 @@ class Car(models.Model):
 
 class Sale(models.Model):
     id = models.IntegerField(primary_key=True)
-    client = models.ForeignKey(Client, null=True, blank=True, on_delete=models.CASCADE, related_name='sales')
-    car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='sales')
+    client = models.ForeignKey(Client, null=True, blank=True, on_delete=models.CASCADE, related_name="sales")
+    car = models.ForeignKey(Car, null=True, blank=True, on_delete=models.CASCADE, related_name="sales")
     created_at = models.DateTimeField(auto_now_add=True)
 
     objects = models.Manager()
